@@ -19,7 +19,7 @@ import com.formaci.nbdi.springboot.app.oauth.clients.UsuarioFeignClient;
 import com.formaci.nbdi.springboot.app.usuarios.commons.models.entity.Usuario;
 
 @Service
-public class UsuarioService implements UserDetailsService{
+public class UsuarioService implements IUsuarioService, UserDetailsService{
 
 	private Logger log = LoggerFactory.getLogger(UsuarioService.class);
 	@Autowired
@@ -38,6 +38,12 @@ public class UsuarioService implements UserDetailsService{
 				.collect(Collectors.toList());
 		log.info("Usuario autenticado: "+ username);
 		return new User(usuario.getUsername(), usuario.getPassword(), usuario.getEnabled(), true, true, true, authorities);
+	}
+
+	@Override
+	public Usuario findByUsername(String username) {
+	
+		return client.findByUsername(username);
 	}
 
 }
